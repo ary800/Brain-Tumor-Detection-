@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MRI Scan Analysis & Tumor Diagnosis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #ffffff;
+      font-family: Arial, sans-serif;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 100%;
+      padding: 0 60px 40px 60px; 
+      box-sizing: border-box;
+    }
+
+    h1 {
+      font-size: 42px;
+      font-weight: 800;
+      color: #004b50;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 40px;
+    }
+
+    .form-card {
+      background-color: #f1f5f9;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 40px;
+    }
+
+    .form-label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      background-color: #004b50;
+      color: white;
+      font-weight: bold;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #00373b;
+    }
+
+    .result-card {
+      padding: 30px;
+      border-radius: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .result-card.red {
+      background-color: #f8d7da;
+      border-left: 10px solid #a10000;
+    }
+
+    .result-card.green {
+      background-color: #d1e7dd;
+      border-left: 10px solid #065f46;
+    }
+
+    .result-section {
+      flex: 1 1 45%;
+    }
+
+    .result-section img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .result-heading {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    .info-box {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-left: 5px solid #004b50;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .result-card {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>MRI Scan Analysis & Tumor Diagnosis</h1>
+    <p class="subtitle">Upload a brain MRI image for evaluation and detailed medical feedback.</p>
+
+    <div class="form-card">
+      <form method="POST" enctype="multipart/form-data">
+        <label for="file" class="form-label">Select MRI Image (JPG, PNG):</label>
+        <input type="file" name="file" id="file" class="form-input" accept="image/*" required>
+        <button type="submit" class="btn">Analyze Image</button>
+      </form>
+    </div>
+
+    {% if result %}
+    {% set is_tumor = 'Tumor:' in result %}
+    <div class="result-card {% if is_tumor %}red{% else %}green{% endif %}">
+      
+      <div class="result-section">
+        <h2 class="result-heading">Diagnosis Result</h2>
+        <p><strong>Result:</strong> {{ result }}</p>
+        <p><strong>Confidence:</strong> {{ confidence }}</p>
+        <img src="{{ file_path }}" alt="MRI Image">
+      </div>
+
+      <div class="result-section">
+        <h2 class="result-heading">Medical Insights</h2>
+        <div class="info-box">
+          <p><strong>Description:</strong> {{ description }}</p>
+          <p><strong>Prevention:</strong> {{ prevention }}</p>
+        </div>
+      </div>
+
+    </div>
+    {% endif %}
+  </div>
+
+</body>
+</html>
